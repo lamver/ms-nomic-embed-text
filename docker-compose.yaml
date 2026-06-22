@@ -1,25 +1,22 @@
 services:
   llama-server:
-    image: ghcr.io/ggml-org/llama.cpp:server
-    # ... все твои настройки llama-server ...
+    image: 'ghcr.io/ggml-org/llama.cpp:server'
+    # ... все твои прошлые настройки llama-server остаются тут ...
 
-  # ИСПРАВЛЕНИЕ: Блок должен быть строго внутри services и выровнен по левому краю с llama-server
   ollama-em:
-    image: ollama/ollama:latest
+    image: 'ollama/ollama:latest'
     container_name: ollama-em
     ports:
-      - "127.0.0.1:11434:11434"
+      - '127.0.0.1:11434:11434'
     expose:
-      - "11434"
+      - '11434'
     volumes:
-      - ./ollama_data:/root/.ollama
+      - './ollama_data:/root/.ollama'
     entrypoint: >
       sh -c "
       ollama serve & 
       sleep 5; 
-      echo 'Загрузка модели nomic-embed-text...';
-      ollama run nomic-embed-text; 
-      echo 'Модель успешно загружена!';
+      ollama pull nomic-embed-text; 
       wait
       "
     restart: unless-stopped
